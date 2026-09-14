@@ -1,0 +1,54 @@
+### Obtener todos los productos
+GET http://localhost:8080/api/productos
+
+### Obtener producto por ID
+GET http://localhost:8080/api/productos/1
+
+### 201 Created
+POST http://localhost:8080/api/favoritos
+Content-Type: application/json
+
+{
+  "productoId": 1,
+  "nota": "Mi producto favorito"
+}
+
+### Listar todos los favoritos
+GET http://localhost:8080/api/favoritos
+
+### Obtener favoritos por ID
+GET http://localhost:8080/api/favoritos/1
+
+### Actualizar Favorito
+PUT http://localhost:8080/api/favoritos/999
+Content-Type: application/json
+
+{
+  "productoId": 2,
+  "nota": "Actualicé mi favorito"
+}
+
+### Eliminar Favorito
+DELETE http://localhost:8080/api/favoritos/1
+
+### Prueba
+GET http://localhost:8080/api/favoritos/1
+
+### Prueba de Validaciones
+POST http://localhost:8080/api/favoritos
+Content-Type: application/json
+
+{
+  "productoId": 1
+}
+###
+POST http://localhost:8080/api/favoritos
+Content-Type: application/json
+
+{
+  "productoId": 0,
+  "nota": ""
+}
+
+### 
+GET http://localhost:8080/api/favoritos/1

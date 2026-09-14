@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service; 
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 import com.ejemplo.tp1_APIREST.DTO.DummyJsonResponse;
 import com.ejemplo.tp1_APIREST.DTO.ProductoDTO;
 import com.ejemplo.tp1_APIREST.DTO.ProductoExternoDTO;
+import com.ejemplo.tp1_APIREST.Exception.ApiExternaException;
 
 @Service
 public class ProductoService {
@@ -20,15 +22,24 @@ public class ProductoService {
 
     //Método que obtiene los productos de la API externa
     public List<ProductoDTO> obtenerProductos() {
-        DummyJsonResponse respuesta = restClient.get()
-            .uri("/products")
-            .retrieve()
-            .body(DummyJsonResponse.class);
+        try {
+            DummyJsonResponse respuesta = restClient.get()
+                .uri("/products")
+                .retrieve()
+                .body(DummyJsonResponse.class);
 
-        return respuesta.getProducts()
-            .stream()
-            .map(this::mapearProducto)
-            .toList();
+            return respuesta.getProducts()
+                .stream()
+                .map(this::mapearProducto)
+                .toList();
+
+        } catch (RestClientException ex) {
+
+            throw new ApiExternaException(
+                "No se pudo comunicar con la API externa de productos",
+                ex
+            );
+        }
     }
 
     //Método que mapea un ProductoExternoDTO a un ProductoDTO
@@ -44,11 +55,20 @@ public class ProductoService {
 
     //Método que obtiene un producto por su ID de la API externa
     public ProductoDTO obtenerProductoPorId(Long id) {
-        ProductoExternoDTO productoExterno = restClient.get()
-            .uri("/products/{id}", id)
-            .retrieve()
-            .body(ProductoExternoDTO.class);
+        try {
+            ProductoExternoDTO productoExterno = restClient.get()
+                .uri("/products/{id}", id)
+                .retrieve()
+                .body(ProductoExternoDTO.class);
 
-        return mapearProducto(productoExterno);
+            return mapearProducto(productoExterno);
+
+        } catch (RestClientException ex) {
+
+            throw new ApiExternaException(
+                "No se pudo comunicar con la API externa de productos",
+                ex
+            );
+        }
     }
 }

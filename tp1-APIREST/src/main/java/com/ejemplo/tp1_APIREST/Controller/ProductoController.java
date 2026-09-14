@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping; 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
+import io.swagger.v3.oas.annotations.Operation;
 
 import java.util.List;
 
@@ -19,11 +20,13 @@ public class ProductoController {
         this.productoService = productoService; 
     } 
     
+    @Operation(summary = "Obtener todos los productos")
     @GetMapping 
     public List<ProductoDTO> obtenerProductos() { 
         return productoService.obtenerProductos(); 
     }
 
+    @Operation(summary = "Obtener un producto por ID")
     @GetMapping("/{id}")
     public ProductoDTO obtenerProductoPorId(@PathVariable Long id) {
         return productoService.obtenerProductoPorId(id);
