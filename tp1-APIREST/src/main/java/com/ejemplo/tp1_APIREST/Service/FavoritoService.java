@@ -31,6 +31,7 @@ public class FavoritoService {
 
         favorito.setProductoId(dto.getProductoId());
         favorito.setNota(dto.getNota());
+        favorito.setListaId(dto.getListaId());
         favorito.setFechaAgregado(LocalDateTime.now());
 
         favoritoRepository.guardar(favorito);
@@ -71,6 +72,7 @@ public class FavoritoService {
 
         favorito.setProductoId(dto.getProductoId());
         favorito.setNota(dto.getNota());
+        favorito.setListaId(dto.getListaId());
 
         return convertirASalida(favorito);
     }
@@ -95,6 +97,7 @@ public class FavoritoService {
         dto.setProductoId(favorito.getProductoId());
         dto.setNota(favorito.getNota());
         dto.setFechaAgregado(favorito.getFechaAgregado());
+        dto.setListaId(favorito.getListaId());
 
         return dto;
     }

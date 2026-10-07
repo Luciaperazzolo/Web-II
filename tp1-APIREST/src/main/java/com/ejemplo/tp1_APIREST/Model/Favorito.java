@@ -7,16 +7,18 @@ public class Favorito {
     private Long productoId; 
     private String nota; 
     private LocalDateTime fechaAgregado;
+    private Long listaId;
 
     // Constructor
     public Favorito() { 
     }
 
-    public Favorito(Long id, Long productoId, String nota, LocalDateTime fechaAgregado) { 
+    public Favorito(Long id, Long productoId, String nota, LocalDateTime fechaAgregado, Long listaId) { 
         this.id = id; 
         this.productoId = productoId;
         this.nota = nota; 
-        this.fechaAgregado = fechaAgregado; 
+        this.fechaAgregado = fechaAgregado;
+        this.listaId = listaId; 
     }
 
     //getters y setters
@@ -43,5 +45,11 @@ public class Favorito {
     }
     public void setFechaAgregado(LocalDateTime fechaAgregado){
         this.fechaAgregado = fechaAgregado;
+    }
+    public Long getListaId() {
+        return listaId;
+    }
+    public void setListaId(Long listaId) {
+        this.listaId = listaId;
     }
 }

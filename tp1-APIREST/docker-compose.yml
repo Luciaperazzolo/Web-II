@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: tp1-postgres
+    environment:
+      POSTGRES_DB: tp1
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "5432:5432"

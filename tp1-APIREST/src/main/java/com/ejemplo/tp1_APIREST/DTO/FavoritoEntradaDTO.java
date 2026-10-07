@@ -10,27 +10,31 @@ public class FavoritoEntradaDTO {
     @Positive(message = "El productoId debe ser mayor a 0")
     private Long productoId;
 
+    @NotNull(message = "El listaId es obligatorio")
+    private Long listaId;
+
     @NotBlank(message = "La nota es obligatoria")
     @Size(max = 500, message = "La nota no puede superar los 500 caracteres")
     private String nota;
 
-
     public FavoritoEntradaDTO() {
     }
-
     public Long getProductoId() {
         return productoId;
     }
-
     public void setProductoId(Long productoId) {
         this.productoId = productoId;
     }
-
     public String getNota() {
         return nota;
     }
-
     public void setNota(String nota) {
         this.nota = nota;
+    }
+    public Long getListaId() {
+        return listaId;
+    }
+    public void setListaId(Long listaId) {
+        this.listaId = listaId;
     }
 }
