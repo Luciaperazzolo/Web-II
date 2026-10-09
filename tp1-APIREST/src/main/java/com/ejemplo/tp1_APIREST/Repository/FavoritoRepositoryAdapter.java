@@ -28,18 +28,17 @@ public class FavoritoRepositoryAdapter implements FavoritoRepository{
 
     @Override
     public List<Favorito> buscarTodos() {
-
-        return favoritoJpaRepository.findAll()
-                .stream()
-                .map(this::convertirADominio)
-                .toList();
+        return favoritoJpaRepository.findAll().stream().map(this::convertirADominio).toList();
     }
 
     @Override
     public Optional<Favorito> buscarPorId(Long id) {
+        return favoritoJpaRepository.findById(id).map(this::convertirADominio);
+    }
 
-        return favoritoJpaRepository.findById(id)
-                .map(this::convertirADominio);
+    @Override
+    public List<Favorito> buscarPorListaId(Long listaId) {
+        return favoritoJpaRepository.findByListaId(listaId).stream().map(this::convertirADominio).toList();
     }
 
     @Override
@@ -48,7 +47,6 @@ public class FavoritoRepositoryAdapter implements FavoritoRepository{
         if (!favoritoJpaRepository.existsById(id)) {
             return false;
         }
-
         favoritoJpaRepository.deleteById(id);
         return true;
     }
@@ -79,6 +77,19 @@ public class FavoritoRepositoryAdapter implements FavoritoRepository{
         if (entity.getLista() != null) {
             favorito.setListaId(entity.getLista().getId());
         }
+        return favorito;
+    }
+
+    @Override
+    public Favorito actualizar(Favorito favorito) {
+        FavoritoEntity entity = convertirAEntity(favorito);
+
+        //Conservamos el ID para actualizar el registro existente.
+        entity.setId(favorito.getId());
+
+        FavoritoEntity actualizado = favoritoJpaRepository.save(entity);
+        favorito.setId(actualizado.getId());
+
         return favorito;
     }
 }

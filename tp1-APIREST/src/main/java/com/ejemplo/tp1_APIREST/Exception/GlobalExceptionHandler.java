@@ -9,57 +9,51 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.ejemplo.tp1_APIREST.Exception.ApiExternaException;
+import com.ejemplo.tp1_APIREST.Exception.ConflictoException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
       @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> manejarValidacion(
-            MethodArgumentNotValidException ex) {
-
+    public ResponseEntity<Map<String, Object>> manejarValidacion(MethodArgumentNotValidException ex) {
         Map<String, String> detalles = new HashMap<>();
 
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                detalles.put(error.getField(), error.getDefaultMessage())
-        );
-
+        ex.getBindingResult().getFieldErrors().forEach(error ->detalles.put(error.getField(), error.getDefaultMessage()));
         Map<String, Object> respuesta = new HashMap<>();
 
         respuesta.put("status", HttpStatus.BAD_REQUEST.value());
         respuesta.put("error", "Error de validación");
         respuesta.put("details", detalles);
 
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(respuesta);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
     }
 
     @ExceptionHandler(RecursoNoEncontradoException.class)
-    public ResponseEntity<Map<String, Object>> manejarRecursoNoEncontrado(
-        RecursoNoEncontradoException ex) {
-
+    public ResponseEntity<Map<String, Object>> manejarRecursoNoEncontrado(RecursoNoEncontradoException ex) {
         Map<String, Object> respuesta = new HashMap<>();
-
         respuesta.put("status", HttpStatus.NOT_FOUND.value());
         respuesta.put("error", "Recurso no encontrado");
         respuesta.put("message", ex.getMessage());
 
-        return ResponseEntity
-            .status(HttpStatus.NOT_FOUND)
-            .body(respuesta);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
     }
 
     @ExceptionHandler(ApiExternaException.class)
-    public ResponseEntity<Map<String, Object>> manejarApiExterna(
-        ApiExternaException ex) {
-
+    public ResponseEntity<Map<String, Object>> manejarApiExterna(ApiExternaException ex) {
         Map<String, Object> respuesta = new HashMap<>();
-
         respuesta.put("status", HttpStatus.BAD_GATEWAY.value());
         respuesta.put("error", "Error en la API externa");
         respuesta.put("message", ex.getMessage());
 
-        return ResponseEntity
-          .status(HttpStatus.BAD_GATEWAY)
-          .body(respuesta);
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(respuesta);
+    }
+
+    @ExceptionHandler(ConflictoException.class)
+    public ResponseEntity<Map<String, Object>> manejarConflicto(ConflictoException ex) {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("status", HttpStatus.CONFLICT.value());
+        respuesta.put("error", "Conflicto");
+        respuesta.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(respuesta);
     }
 }

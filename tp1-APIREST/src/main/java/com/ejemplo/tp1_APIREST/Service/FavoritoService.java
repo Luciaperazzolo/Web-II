@@ -1,3 +1,4 @@
+
 package com.ejemplo.tp1_APIREST.Service;
 
 import java.time.LocalDateTime;
@@ -20,14 +21,9 @@ public class FavoritoService {
         this.favoritoRepository = favoritoRepository;
     }
 
-    private Long siguienteId = 1L;
-
     public FavoritoSalidaDTO crear(FavoritoEntradaDTO dto) {
 
         Favorito favorito = new Favorito();
-
-        favorito.setId(siguienteId);
-        siguienteId++;
 
         favorito.setProductoId(dto.getProductoId());
         favorito.setNota(dto.getNota());
@@ -40,59 +36,32 @@ public class FavoritoService {
     }
 
     public List<FavoritoSalidaDTO> buscarTodos() {
-
-        return favoritoRepository.buscarTodos()
-            .stream()
-            .map(this::convertirASalida)
-            .toList();
+        return favoritoRepository.buscarTodos().stream().map(this::convertirASalida).toList();
     }
 
     public FavoritoSalidaDTO buscarPorId(Long id) {
-
-        Favorito favorito = favoritoRepository.buscarPorId(id)
-            .orElseThrow(() ->
-                new RecursoNoEncontradoException(
-                    "No existe un favorito con el id " + id
-                )
-            );
-
+        Favorito favorito = favoritoRepository.buscarPorId(id).orElseThrow(() ->new RecursoNoEncontradoException("No existe un favorito con el id " + id));
         return convertirASalida(favorito);
     }
 
-    public FavoritoSalidaDTO actualizar(
-            Long id,
-            FavoritoEntradaDTO dto) {
-
-        Favorito favorito = favoritoRepository.buscarPorId(id)
-            .orElseThrow(() ->
-                new RecursoNoEncontradoException(
-                    "No existe un favorito con el id " + id
-                )
-            );
-
+    public FavoritoSalidaDTO actualizar(Long id,FavoritoEntradaDTO dto) {
+        Favorito favorito = favoritoRepository.buscarPorId(id).orElseThrow(() ->new RecursoNoEncontradoException("No existe un favorito con el id " + id));
         favorito.setProductoId(dto.getProductoId());
         favorito.setNota(dto.getNota());
         favorito.setListaId(dto.getListaId());
+
+        favoritoRepository.actualizar(favorito);
 
         return convertirASalida(favorito);
     }
 
     public void eliminar(Long id) {
-
-        Favorito favorito = favoritoRepository.buscarPorId(id)
-            .orElseThrow(() ->
-                new RecursoNoEncontradoException(
-                    "No existe un favorito con el id " + id
-                )
-            );
-
+        Favorito favorito = favoritoRepository.buscarPorId(id).orElseThrow(() ->new RecursoNoEncontradoException("No existe un favorito con el id " + id));
         favoritoRepository.eliminarPorId(favorito.getId());
     }
 
     private FavoritoSalidaDTO convertirASalida(Favorito favorito) {
-
         FavoritoSalidaDTO dto = new FavoritoSalidaDTO();
-
         dto.setId(favorito.getId());
         dto.setProductoId(favorito.getProductoId());
         dto.setNota(favorito.getNota());
